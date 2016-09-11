@@ -52,7 +52,6 @@ public class Game extends JFrame implements ActionListener {
 
     public void actionPerformed(ActionEvent evt) {
         Object source = evt.getSource();
-        //System.out.println("im running");
         if (isVisible() && panel != null) {
             panel.moveCam();
             panel.update();

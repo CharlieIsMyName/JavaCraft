@@ -25,7 +25,7 @@ public class Building {
     private Player owner;
     private int cp; 						//the camp the building belongs to
     private int imgSize;
-	//barracks (construction), barracks(training), barracks (regular)
+    //barracks (construction), barracks(training), barracks (regular)
     //command centre(construction), command centre (regular)
     private Image[] barCon, barTrain, barReg, comCon, comReg;
     private Image curImage, buildImage, regImage, trainImage, selCircle;
@@ -43,9 +43,12 @@ public class Building {
     private String trainingUnit; 			//the unit(s) the building can train
 
     private AudioClip finishedTrainingSound;
+    private AudioClip medicSound;
 
     private Point drawDelta;
     private Point regCircleDelta, buildCircleDelta, curCircleDelta;
+
+    private int sightRange = 10;
 
     //private []Building necessaryBuildings; //buildings necessary to create - for Player
     private boolean[][][] visGrid;
@@ -91,6 +94,7 @@ public class Building {
             trainImage = barTrain[cp];
             trainingUnit = "marine";
             finishedTrainingSound = Applet.newAudioClip(getClass().getResource("./sound/marine/tmardy00.wav"));
+            medicSound = Applet.newAudioClip(getClass().getResource("./sound/medic/tmdrdy00.wav"));
         } else if (type.equals("command centre")) {
             drawDelta = new Point(0, 0);
             buildCircleDelta = new Point(-16, -16);
@@ -136,13 +140,24 @@ public class Building {
                 if (amountTrained == trainingTime) {
                     Point p = findAvailablePlace();
                     if (p != null) {
-                        amountTrained = 0;
                         owner.addNewUnit(trainingUnit, findAvailablePlace());
                         finishedTrainingSound.play();
                         stopTraining();
                     }
                 }
             }
+            if(curTask.equals("medic")){
+                amountTrained += 1;
+                if (amountTrained == trainingTime) {
+                    Point p = findAvailablePlace();
+                    if (p != null) {
+                        owner.addNewUnit("medic", findAvailablePlace());
+                        medicSound.play();
+                        stopTraining();
+                    }
+                }
+            }
+            
         } else if (curStatus.equals("building")) {
             amountBuilt += 1;
             if (amountBuilt == buildingTime) {
@@ -169,7 +184,7 @@ public class Building {
     }
 
     public void addMineralCount() {
-        owner.addMineralCount(8);
+        owner.addMineralCount(5);
     }
 
     //Deals d damage to its hp
@@ -188,12 +203,19 @@ public class Building {
         changeTask("training");
         curImage = trainImage;
     }
+    
+    public void trainMedic(){
+        changeTask("medic");
+        curImage = trainImage;
+    }
 
     //Changes task back to nothing when done training a unit.
     public void stopTraining() {
         changeTask("");
         curImage = regImage;
+        amountTrained = 0;
     }
+    
 
     //Finds an available place to put the new trained unit, and waits for one if doesn't find.
     public Point findAvailablePlace() {
@@ -226,7 +248,7 @@ public class Building {
     public void draw(Graphics g, GamePanel p) {
         Point screenCoords = getSCoord();
         g.drawImage(curImage, screenCoords.x + drawDelta.x, screenCoords.y + drawDelta.y, p);
-    	//g.setColor(getColour());
+        //g.setColor(getColour());
         //g.fillRect(screenCoords.x, screenCoords.y, map.gridMapLength(gridW), map.gridMapLength(gridH));
     }
 
@@ -297,6 +319,10 @@ public class Building {
 
     public int getHeight() {
         return gridH;
+    }
+
+    public int getSightRange() {
+        return sightRange;
     }
 
     public int mapWidth() {

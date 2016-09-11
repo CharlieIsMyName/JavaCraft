@@ -472,6 +472,13 @@ class GamePanel extends JPanel implements MouseMotionListener, MouseListener, Ke
         if (keys[KeyEvent.VK_T]) {
             goodGuy.trainUnit();
         }
+        if(keys[KeyEvent.VK_ESCAPE]){
+            goodGuy.cancelTraining();
+        }
+        if(keys[KeyEvent.VK_M]){
+            goodGuy.trainMedic();
+        }
+        
         if (keys[KeyEvent.VK_CONTROL] && goodGuy.hasSelUnits()) {
             goodGuy.createControlGroup(keys);
         } else if (keys[KeyEvent.VK_SHIFT] && goodGuy.hasSelUnits()) {
@@ -506,7 +513,7 @@ class GamePanel extends JPanel implements MouseMotionListener, MouseListener, Ke
         p.addNewBuilding("barracks", new Point(24, 3));
         p.addNewUnit("scv", new Point(2, 6));
         p.addNewUnit("scv", new Point(3, 9));
-        p.addNewUnit("scv", new Point(6, 6));
+        //p.addNewUnit("scv", new Point(6, 6));
         p.addNewUnit("marine", new Point(7, 3));
         p.addNewUnit("marine", new Point(8, 3));
         p.addNewUnit("marine", new Point(9, 3));
@@ -539,6 +546,10 @@ class GamePanel extends JPanel implements MouseMotionListener, MouseListener, Ke
         p.addNewUnit("marine", new Point(104, 117));
         p.addNewUnit("marine", new Point(102, 118));
         p.addNewUnit("marine", new Point(106, 119));
+        
+        p.addNewUnit("medic", new Point(109, 114));
+        p.addNewUnit("medic", new Point(106, 118));
+        p.addNewUnit("medic", new Point(102, 116));
     }
 
     //A custom base for the bottom left of the map.
@@ -556,6 +567,10 @@ class GamePanel extends JPanel implements MouseMotionListener, MouseListener, Ke
         p.addNewUnit("marine", new Point(26, 108));
         p.addNewUnit("marine", new Point(29, 102));
         p.addNewUnit("marine", new Point(29, 105));
+        
+        p.addNewUnit("medic", new Point(4, 108));
+        p.addNewUnit("medic", new Point(26, 105));
+        p.addNewUnit("medic", new Point(27, 105));
         p.addNewBuilding("command centre", new Point(18, 119));
     }
 
@@ -567,6 +582,9 @@ class GamePanel extends JPanel implements MouseMotionListener, MouseListener, Ke
         p.addNewUnit("marine", new Point(20, 48));
         p.addNewUnit("marine", new Point(22, 45));
         p.addNewUnit("marine", new Point(24, 47));
+        
+        p.addNewUnit("medic", new Point(21, 46));
+        p.addNewUnit("medic", new Point(26, 45));
     }
 
     //Adds a group of marines in the middle of the screen
@@ -579,6 +597,10 @@ class GamePanel extends JPanel implements MouseMotionListener, MouseListener, Ke
         p.addNewUnit("marine", new Point(56, 51));
         p.addNewUnit("marine", new Point(53, 48));
         p.addNewUnit("marine", new Point(54, 46));
+        
+        p.addNewUnit("medic", new Point(56, 49));
+        p.addNewUnit("medic", new Point(62, 45));
+        p.addNewUnit("medic", new Point(55, 48));
 
     }
 

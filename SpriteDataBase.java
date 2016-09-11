@@ -60,7 +60,7 @@ public class SpriteDataBase{
 		medic=load(medic,"./unit/medic/player/death",9,8,0,4,"medic","death");
 		medic=load(medic,"./unit/medic/player/moving",7,0,0,4,"medic","moving");
 		medic=load(medic,"./unit/medic/player/standing",1,0,0,4,"medic","standing");
-		medic=load(medic,"./unit/medic/enemy/healing",4,2,0,4,"medic","atk");
+		medic=load(medic,"./unit/medic/enemy/healing",4,2,1,4,"medic","atk");
 		medic=load(medic,"./unit/medic/enemy/death",9,8,1,4,"medic","death");
 		medic=load(medic,"./unit/medic/enemy/moving",7,0,1,4,"medic","moving");
 		medic=load(medic,"./unit/medic/enemy/standing",1,0,1,4,"medic","standing");

@@ -77,6 +77,7 @@ public class Unit {
     private SpriteList minSprList;			//the SCV sprite list for minerals
     private boolean smoothMove = true; 		//if the unit is moving grid to grid
     private boolean smoothStopped = false; 	//if the unit is waiting for another unit to move before it continues
+    private boolean deathSoundPlayed = false;
     //its unsmooth path
 
     private int audioDelay, audioTimePassed; //audioTimePassed - the time passed once an attack audio has been played
@@ -128,7 +129,7 @@ public class Unit {
         visGrid = owner.getVisGrid();
 
         if (type.equals("marine")) {
-            atkRange = 400;
+            atkRange = 300;
             sgtRange = 10;
             almRange = 8;
             attackSpeed = 90; 	//how many frames in an attack cycle
@@ -152,7 +153,7 @@ public class Unit {
             mMapUnitSize = 3;
             unitSize = 32;
         } else if (type.equals("medic")) {
-            atkRange = 400;
+            atkRange = 300;
             sgtRange = 10;
             almRange = 8;
             attackSpeed = 8; 	//how many frames in an attack cycle
@@ -160,7 +161,7 @@ public class Unit {
             hp = maxHp;
             maxMana = 100;
             mana = maxMana;
-            baseAtk = -6;
+            baseAtk = -3;
             baseArmour = 1;
             attackLvl = 0;
             armourLvl = 0;
@@ -528,7 +529,7 @@ public class Unit {
 
         if (type.equals("medic")) {
             for (Unit u : player.getUnits()) {
-                if (ableToAtk(u) && withinRange(atkRange, u) && !u.isMaxHp() && u != this) {
+                if (ableToAtk(u) && withinRange(atkRange, u) && !u.isMaxHp() && !u.isDead() && u != this) {
                     setTarget(u);
                     return;
                 }
@@ -780,7 +781,10 @@ public class Unit {
 
     public void updateDeadStat() {
         if (isDead()) {
-            panel.playSound(this, "death");
+            if(!deathSoundPlayed){
+                panel.playSound(this, "death");
+                deathSoundPlayed=true;
+            }
             owner.removeUnit(this);
             changeStatus("death");
         }

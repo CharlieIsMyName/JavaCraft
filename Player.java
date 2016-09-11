@@ -177,13 +177,14 @@ public class Player {
         if (pos == null) {
             return;
         }
-        buildings.add(new Building(this, type, pos.x, pos.y, panel, map, miniMap));
+        Building temp=new Building(this, type, pos.x, pos.y, panel, map, miniMap);
+        buildings.add(temp);
     }
 
     //Trains a new unit according to the building selected, if player has enough minerals.
     public void trainUnit() {
         if (selectedBuilding == null || selectedBuilding.status().equals("building")
-                || selectedBuilding.task().equals("training")) {
+                || selectedBuilding.task().equals("training") || selectedBuilding.task().equals("medic")) {
             return;
         }
         String unitTrained = selectedBuilding.getTrainingUnit();
@@ -192,7 +193,35 @@ public class Player {
             minerals -= trainCosts.get(unitTrained);
         }
     }
+    
+    public void trainMedic() {
+        if (selectedBuilding == null || selectedBuilding.status().equals("building")
+                || selectedBuilding.task().equals("training") || selectedBuilding.task().equals("medic")) {
+            return;
+        }
+        
+        if(selectedBuilding.getType().equals("command centre")){
+            return;
+        }
+        
+        String unitTrained = selectedBuilding.getTrainingUnit();            //medic has the same cost as marine
+        if (minerals >= trainCosts.get(unitTrained)) {
+            selectedBuilding.trainMedic();
+            minerals -= trainCosts.get(unitTrained);
+        }
+    }
 
+    public void cancelTraining(){
+        if (selectedBuilding == null || selectedBuilding.status().equals("building")) {
+            return;
+        }
+        
+        if(selectedBuilding.task().equals("training") || selectedBuilding.task().equals("medic")){
+            selectedBuilding.stopTraining();
+            String unitTrained = selectedBuilding.getTrainingUnit();
+            minerals += trainCosts.get(unitTrained);
+        }
+    }
     //Updates the destination of all selected units
     public void updateUnitDest(Point newDest, boolean atk) {
         for (Unit u : selectedUnits) {
@@ -300,18 +329,33 @@ public class Player {
     //Adds units to the control group specified
     public void addUnitsToControlGroup(boolean[] keys) {
         if (keys[KeyEvent.VK_1]) {
+            if(controlGroups.get(1)==null){
+                controlGroups.set(1, clone(selectedUnits));
+            }
             addUnitsToControlGroup(1);
         }
         if (keys[KeyEvent.VK_2]) {
+            if(controlGroups.get(2)==null){
+                controlGroups.set(2, clone(selectedUnits));
+            }
             addUnitsToControlGroup(2);
         }
         if (keys[KeyEvent.VK_3]) {
+            if(controlGroups.get(3)==null){
+                controlGroups.set(3, clone(selectedUnits));
+            }
             addUnitsToControlGroup(3);
         }
         if (keys[KeyEvent.VK_4]) {
+            if(controlGroups.get(4)==null){
+                controlGroups.set(4, clone(selectedUnits));
+            }
             addUnitsToControlGroup(4);
         }
         if (keys[KeyEvent.VK_5]) {
+            if(controlGroups.get(5)==null){
+                controlGroups.set(5, clone(selectedUnits));
+            }
             addUnitsToControlGroup(5);
         }
     }
